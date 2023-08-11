@@ -367,12 +367,14 @@ export default class PowerSelect extends Component<PowerSelectArgs> {
       });
 
       this._lastSelectedPromise = currentSelectedPromise;
-      this._lastSelectedPromise.then(resolvedSelected => {
-        if (this._lastSelectedPromise === currentSelectedPromise) {
-          this._resolvedSelected = resolvedSelected;
-          this._highlight(resolvedSelected)
-        }
-      });
+      if (typeof this._lastSelectedPromise.then === 'function') {
+        this._lastSelectedPromise.then(resolvedSelected => {
+          if (this._lastSelectedPromise === currentSelectedPromise) {
+            this._resolvedSelected = resolvedSelected;
+            this._highlight(resolvedSelected)
+          }
+        });
+      }
     } else {
       this._resolvedSelected = undefined;
       // Don't highlight args.selected array on multi-select
